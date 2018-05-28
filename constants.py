@@ -1,0 +1,11 @@
+tag_num = 50
+ent_num = 19
+max_par = 767 + 1
+max_q  = 60 + 1
+EMBEDDING_SIZE = 300
+CONTEXT_MAX_SIZE = max_par + 1
+QUESTION_MAX_SIZE = max_q + 1
+BATCH_SIZE = 64
+TRAINING_EPOCHS = 2700
+LSTM_CELL_HIDDEN_SIZE = 128
+FEATURES_SIZE = 73
