@@ -1,8 +1,7 @@
 import msgpack
 import tensorflow as tf
 import numpy as np
-from constants import*
-from prepare import*
+tf.reset_default_graph()
 
 questions = tf.placeholder(dtype=tf.float32, name="questions", shape=(None, QUESTION_MAX_SIZE, EMBEDDING_SIZE))
 answer_starts = tf.placeholder(dtype=tf.int32, name="answer_starts", shape=(None))
@@ -70,13 +69,14 @@ question_attention = tf.reshape(question_attention, (b_s, QUESTION_MAX_SIZE, 1))
 #[.][.][.][.]   [.]//weights
 
 question_output = tf.matmul(
-	tf.transpose(question_output, perm=[0, 2, 1]), question_attention
-	)
+    tf.transpose(question_output, perm=[0, 2, 1]), question_attention
+    )
+question_output = tf.reshape(question_output, (BATCH_SIZE, 2 * LSTM_CELL_HIDDEN_SIZE))
 q_state = tf.contrib.rnn.LSTMStateTuple(question_output, question_output)
 #==================
 question_output = tf.reshape(
-	question_output, (b_s, 2 * LSTM_CELL_HIDDEN_SIZE)
-	)
+    question_output, (b_s, 2 * LSTM_CELL_HIDDEN_SIZE)
+    )
 #!!!!!!!question_output = tf.layers.batch_normalization(question_output, training = if_train)
 #==================
 lstm_fw_cell = tf.nn.rnn_cell.BasicLSTMCell(2 * LSTM_CELL_HIDDEN_SIZE)
@@ -132,15 +132,15 @@ dense_end = tf.layers.dense(
 )
 #dense_end = tf.layers.batch_normalization(dense_end)
 dense_begin = tf.matmul(dense_begin,
-				tf.reshape(question_output,
-				(b_s, 2*LSTM_CELL_HIDDEN_SIZE, 1)),
-				name = "dense_begin"
-				)
+                tf.reshape(question_output,
+                (b_s, 2*LSTM_CELL_HIDDEN_SIZE, 1)),
+                name = "dense_begin"
+                )
 dense_end = tf.matmul(dense_end,
-				tf.reshape(question_output,
-				(b_s, 2*LSTM_CELL_HIDDEN_SIZE, 1)),
-				name = "dense_end"
-				)
+                tf.reshape(question_output,
+                (b_s, 2*LSTM_CELL_HIDDEN_SIZE, 1)),
+                name = "dense_end"
+                )
 loss_beg = tf.reduce_mean(
     tf.nn.sparse_softmax_cross_entropy_with_logits(
         labels=answer_starts,
@@ -213,11 +213,4 @@ for i in (range(TRAINING_EPOCHS)):
     if i % (TRAINING_EPOCHS // 2) == 0:
         saver.save(sess, './datas/model_2/my_test_model_' + str(i))
 saver.save(sess, './datas/model_2/res/actual')
-
-
-
-
-
-
-
 
