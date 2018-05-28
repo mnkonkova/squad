@@ -60,8 +60,8 @@ ent2index = {w: i for i, w in enumerate(meta['vocab_ent'])}
 
 tf.reset_default_graph()
 sess_r=tf.Session()
-saver = tf.train.import_meta_graph(' ./datas/model_1/my_test_model_1.meta')
-saver.restore(sess_r,tf.train.latest_checkpoint('./ ./datas/model_1/'))
+saver = tf.train.import_meta_graph('my_test_model_1.meta')
+saver.restore(sess_r,tf.train.latest_checkpoint('./'))
 
 graph = tf.get_default_graph()
 embedded_inputs_nof = graph.get_tensor_by_name("embedded_inputs_nof:0")
@@ -106,4 +106,3 @@ if (e >= c_l):
 if (b >= c_l):
     b = c_l - 1
 print(" ".join((tock_context[b:e])))
-
