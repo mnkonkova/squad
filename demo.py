@@ -76,8 +76,9 @@ seq_len =  graph.get_tensor_by_name("seq_len:0")
 
 dense_begin = graph.get_tensor_by_name("dense_begin:0")
 dense_end = graph.get_tensor_by_name("dense_end:0")
-
+print("Context:")
 context = str(input())
+print("Question:")
 question = str(input())
 
 (cont_emb, cont_len, feats, quest_emb, quest_mask) = get_demo_emb(context, question, meta, word2index)
@@ -105,4 +106,5 @@ if (e >= c_l):
     e = c_l - 1
 if (b >= c_l):
     b = c_l - 1
+print("Answer:")
 print(" ".join((tock_context[b:e])))
