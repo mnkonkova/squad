@@ -90,5 +90,5 @@ while(i < m):
     print("done", i, "out of" , m)
     F_d += F_score(b_d, e_d, start_d, end_d, BATCH_SIZE) * BATCH_SIZE
     i += BATCH_SIZE
-i  -= 5 * BATCH_SIZE
+i  -= BATCH_SIZE
 print('Test:\t', F_d / i) 
