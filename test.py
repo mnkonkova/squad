@@ -68,7 +68,7 @@ dense_end = graph.get_tensor_by_name("dense_end:0")
 
 i = 0
 F_d = 0
-while(i < len(data['dev'])):
+while(i < BATCH_SIZE * 4):
     (emb_d, len_emb_d, features_d, q_d, start_d, end_d, mask_q_d) = get_test_emb(BATCH_SIZE, data['dev'], False)
     b_d, e_d = sess_r.run(
                 [dense_begin,
