@@ -67,25 +67,24 @@ dense_begin = graph.get_tensor_by_name("dense_begin:0")
 dense_end = graph.get_tensor_by_name("dense_end:0")
 
 i = 0
+F_d = 0
 while(i < len(data['dev'])):
-	(emb_d, len_emb_d, features_d, q_d, start_d, end_d, mask_q_d) = get_test_emb(BATCH_SIZE, data['dev'], False)
-	b_d, e_d = sess_r.run(
-	            [dense_begin,
-	             dense_end],
-	            feed_dict = {
-	                embedded_inputs_nof: emb_d,
-	                answer_starts: start_d, 
-	                answer_ends: end_d,
-	                emb_features:features_d,
-	                questions: q_d,
-	                if_train: False, 
-	                keep_prob: 1.0,
-	                mask_q: mask_q_d,
-	                seq_len: len_emb_d
-	            }
-	        )
-	F_d = F_score(b_d, e_d, start_d, end_d, BATCH_SIZE) * BATCH_SIZE
-	i += BATCH_SIZE
-print('Test:\t',i / len(data['dev']))
-
-
+    (emb_d, len_emb_d, features_d, q_d, start_d, end_d, mask_q_d) = get_test_emb(BATCH_SIZE, data['dev'], False)
+    b_d, e_d = sess_r.run(
+                [dense_begin,
+                 dense_end],
+                feed_dict = {
+                    embedded_inputs_nof: emb_d,
+                    answer_starts: start_d, 
+                    answer_ends: end_d,
+                    emb_features:features_d,
+                    questions: q_d,
+                    if_train: False, 
+                    keep_prob: 1.0,
+                    mask_q: mask_q_d,
+                    seq_len: len_emb_d
+                }
+            )
+    F_d += F_score(b_d, e_d, start_d, end_d, BATCH_SIZE) * BATCH_SIZE
+    i += BATCH_SIZE
+print('Test:\t', F_d / i) 
