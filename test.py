@@ -47,7 +47,7 @@ def get_test_emb(size, data, l, tr=False, b = 0):
     return emb, len_emb, features, emb_q, start, end, mask_q
 
 sess_r=tf.Session() 
-saver = tf.train.import_meta_graph('my_test_model.meta')
+saver = tf.train.import_meta_graph('my_test_model_1.meta')
 saver.restore(sess_r,tf.train.latest_checkpoint('./'))
 
 graph = tf.get_default_graph()
