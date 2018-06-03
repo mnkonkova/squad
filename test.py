@@ -68,7 +68,7 @@ dense_end = graph.get_tensor_by_name("dense_end:0")
 
 i = 0
 F_d = 0
-m = len(data['dev'])
+m = 10496 - BATCH_SIZE
 l_0 = np.arange(0, m, 1)
 while(i < m):
     (emb_d, len_emb_d, features_d, q_d, start_d, end_d, mask_q_d) = get_test_emb(BATCH_SIZE, data['dev'], l_0, False, b = i)
@@ -90,5 +90,5 @@ while(i < m):
     print("done", i, "out of" , m)
     F_d += F_score(b_d, e_d, start_d, end_d, BATCH_SIZE) * BATCH_SIZE
     i += BATCH_SIZE
-i  -= BATCH_SIZE
+i  -= 5 * BATCH_SIZE
 print('Test:\t', F_d / i) 
