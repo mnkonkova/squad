@@ -85,7 +85,7 @@ while(i < m):
                     seq_len: len_emb_d
                 }
             )
-    print("done", i, "out of" , m, ";", F_d / i)
+    print("done", i, "out of" , m)
     F_d += F_score(b_d, e_d, start_d, end_d, BATCH_SIZE) * BATCH_SIZE
     i += BATCH_SIZE
 i  -= BATCH_SIZE
