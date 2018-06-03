@@ -16,7 +16,7 @@ def get_test_emb(size, data, l, tr=False, b = 0):
     mask_q = np.zeros((size), dtype=np.int32)
     features = np.zeros((size, CONTEXT_MAX_SIZE, FEATURES_SIZE), dtype=np.float64)
     
-    for i in range(size):
+    for i in range(min(size, m - b)):
         count = 0
         par = data[l[i]][1]
         
