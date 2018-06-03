@@ -1,6 +1,9 @@
 import msgpack
 import tensorflow as tf
 import numpy as np
+
+from constants import *
+from prepare import *
 tf.reset_default_graph()
 
 questions = tf.placeholder(dtype=tf.float32, name="questions", shape=(None, QUESTION_MAX_SIZE, EMBEDDING_SIZE))
