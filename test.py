@@ -2,6 +2,8 @@ import msgpack
 import tensorflow as tf
 import numpy as np
 
+from constants import *
+from prepare import *
 def get_test_emb(size, data, l, tr=False, b = 0):
     m = len(data)
     l = l[b:min(size + b, m)]
