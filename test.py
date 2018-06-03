@@ -1,11 +1,9 @@
 import msgpack
 import tensorflow as tf
 import numpy as np
-from constants import*
-from prepare import*
-def get_test_emb(size, data, tr=False, b = 0):
+
+def get_test_emb(size, data, l, tr=False, b = 0):
     m = len(data)
-    l = np.arange(0, m, 1)
     l = l[b:min(size + b, m)]
     emb = np.zeros((size, CONTEXT_MAX_SIZE, EMBEDDING_SIZE))
     len_emb = np.zeros((size), dtype=np.int32)
@@ -49,7 +47,7 @@ def get_test_emb(size, data, tr=False, b = 0):
     return emb, len_emb, features, emb_q, start, end, mask_q
 
 sess_r=tf.Session() 
-saver = tf.train.import_meta_graph('my_test_model_1.meta')
+saver = tf.train.import_meta_graph('my_test_model.meta')
 saver.restore(sess_r,tf.train.latest_checkpoint('./'))
 
 graph = tf.get_default_graph()
@@ -68,8 +66,10 @@ dense_end = graph.get_tensor_by_name("dense_end:0")
 
 i = 0
 F_d = 0
-while(i < BATCH_SIZE * 4):
-    (emb_d, len_emb_d, features_d, q_d, start_d, end_d, mask_q_d) = get_test_emb(BATCH_SIZE, data['dev'], False)
+m = len(data['dev'])
+l_0 = np.arange(0, m, 1)
+while(i < m):
+    (emb_d, len_emb_d, features_d, q_d, start_d, end_d, mask_q_d) = get_test_emb(BATCH_SIZE, data['dev'], l_0, False, b = i)
     b_d, e_d = sess_r.run(
                 [dense_begin,
                  dense_end],
@@ -85,6 +85,8 @@ while(i < BATCH_SIZE * 4):
                     seq_len: len_emb_d
                 }
             )
+    print("done", i, "out of" , m, ";", F_d / i)
     F_d += F_score(b_d, e_d, start_d, end_d, BATCH_SIZE) * BATCH_SIZE
     i += BATCH_SIZE
+i  -= BATCH_SIZE
 print('Test:\t', F_d / i) 
